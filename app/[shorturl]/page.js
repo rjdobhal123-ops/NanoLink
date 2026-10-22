@@ -1,28 +1,21 @@
-import { Suspense } from "react";
-import { notFound, redirect } from "next/navigation";
-import clientPromise from "@/lib/mongodb";
-
-export default function Page({ params }) {
-return (
-<Suspense fallback={<p>Redirecting...</p>}> <RedirectUser params={params} /> </Suspense>
-);
-}
-
-async function RedirectUser({ params }) {
-const { shorturl } = await params;
+import { notFound, redirect } from "next/navigation"
+import clientPromise from "@/lib/mongodb"
 
 
-const client = await clientPromise;
-const db = client.db("NanoLink");
-const collection = db.collection("urls");
+export default async function Page({ params }) {
+    const shorturl = (await params).shorturl
 
-const doc = await collection.findOne({ shorturl });
+    const client = await clientPromise;
+    const db = client.db("NanoLink")
+    const collection = db.collection("urls")
 
-if (doc) {
-    redirect(doc.url);
-}
+    const doc = await collection.findOne({shorturl: shorturl})
+    
+    if(doc){
+         redirect(doc.url)
+    }
+    else{
+       notFound();
 
-notFound();
-
-
+  }
 }
