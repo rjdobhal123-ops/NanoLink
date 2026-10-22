@@ -1,23 +1,28 @@
-export const dynamic = "force-dynamic";
+import { Suspense } from "react";
+import { notFound, redirect } from "next/navigation";
+import clientPromise from "@/lib/mongodb";
 
-import { notFound, redirect } from "next/navigation"
-import clientPromise from "@/lib/mongodb"
+export default function Page({ params }) {
+return (
+<Suspense fallback={<p>Redirecting...</p>}> <RedirectUser params={params} /> </Suspense>
+);
+}
+
+async function RedirectUser({ params }) {
+const { shorturl } = await params;
 
 
-export default async function Page({ params }) {
-    const shorturl = (await params).shorturl
+const client = await clientPromise;
+const db = client.db("NanoLink");
+const collection = db.collection("urls");
 
-    const client = await clientPromise;
-    const db = client.db("NanoLink")
-    const collection = db.collection("urls")
+const doc = await collection.findOne({ shorturl });
 
-    const doc = await collection.findOne({shorturl: shorturl})
-    
-    if(doc){
-         redirect(doc.url)
-    }
-    else{
-       notFound();
+if (doc) {
+    redirect(doc.url);
+}
 
-  }
+notFound();
+
+
 }
