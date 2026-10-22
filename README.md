@@ -242,7 +242,7 @@ Possible enhancements for NanoLink include:
 
 B.Tech Computer Science and Engineering Student
 
-GitHub: [YOUR_GITHUB_PROFILE](https://github.com/YOUR_USERNAME)
+GitHub: [YOUR_GITHUB_PROFILE](https://github.com/rjdobhal123-ops/NanoLink)
 
 ## 📄 License
 
